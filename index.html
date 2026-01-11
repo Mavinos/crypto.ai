@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>Crypto AI</title>
 
-  <!-- 🔴 OBLIGATOIRE POUR MOBILE -->
+  <!-- MOBILE -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="style.css">
@@ -32,7 +32,6 @@
 
 <div class="main">
 
-  <!-- ACCUEIL -->
   <section id="home" class="section active">
     <h1>Crypto AI</h1>
     <p>
@@ -44,71 +43,47 @@
     </p>
   </section>
 
-  <!-- CRYPTO -->
   <section id="crypto" class="section">
-
     <h2>Marché Crypto</h2>
-
-    <div class="ia-box">
-      <span id="iaState">IA activée</span>
-      <button id="iaToggle" class="btn" onclick="toggleIA()">IA ON / OFF</button>
-    </div>
-
-    <!-- CARTES -->
-    <div id="cards" class="cards"></div>
-
-    <h3 id="selectedTitle">Sélectionne une crypto</h3>
-
-    <!-- ✅ UN SEUL CANVAS -->
-    <canvas id="chart"></canvas>
-
-    <div class="data">
-      <div id="price">--</div>
-      <p>RSI : <strong id="rsi">--</strong></p>
-      <p>Tendance : <strong id="trend">--</strong></p>
-      <p>Décision IA : <strong id="decision">--</strong></p>
-      <p>Position : <strong id="position">--</strong></p>
-      <p>Entrée : <strong id="entry">--</strong></p>
-      <p>Stop-loss : <strong id="sl">--</strong></p>
-      <p>Take-profit : <strong id="tp">--</strong></p>
-      <p>Capital : <strong id="capital">--</strong> $</p>
-    </div>
-
-    <select id="cryptoSelect" class="btn">
-      <option value="BTC/USDT">Bitcoin</option>
-      <option value="ETH/USDT">Ethereum</option>
-      <option value="SOL/USDT">Solana</option>
-    </select>
-
-    <h3>Historique IA</h3>
-    <div class="table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th>Heure</th>
-            <th>Action</th>
-            <th>Prix</th>
-          </tr>
-        </thead>
-        <tbody id="history"></tbody>
-      </table>
-    </div>
-
+    <p>(Mode démo – backend désactivé)</p>
   </section>
 
-  <!-- PARAMÈTRES -->
   <section id="settings" class="section">
     <h2>Paramètres</h2>
     <label>
       Nom :
-      <input id="nameInput" placeholder="Ton prénom">
+      <input placeholder="Ton prénom">
     </label>
-    <button id="saveName" class="btn">Enregistrer</button>
+    <button class="btn">Enregistrer</button>
   </section>
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="app.js"></script>
+<!-- 🔥 SCRIPT NAVIGATION SÛR -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const navItems = document.querySelectorAll(".nav-item");
+  const sections = document.querySelectorAll(".section");
+
+  navItems.forEach(item => {
+    item.addEventListener("click", () => {
+
+      navItems.forEach(n => n.classList.remove("active"));
+      sections.forEach(s => s.classList.remove("active"));
+
+      item.classList.add("active");
+      const target = item.dataset.section;
+      const section = document.getElementById(target);
+
+      if (section) {
+        section.classList.add("active");
+      }
+    });
+  });
+
+  console.log("✅ Navigation fonctionnelle");
+});
+</script>
+
 </body>
 </html>
