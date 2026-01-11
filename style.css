@@ -396,3 +396,53 @@ td.sell {
 select {
   margin-bottom: 20px;
 }
+
+/* =========================
+   RESPONSIVE MOBILE
+========================= */
+@media (max-width: 768px) {
+
+  body {
+    overflow-x: hidden;
+  }
+
+  .container,
+  .main,
+  .content {
+    width: 100%;
+    padding: 12px;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 100%;
+    position: relative;
+    height: auto;
+  }
+
+  /* Sections */
+  .card,
+  .panel,
+  .box {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  /* Table historique */
+  table {
+    width: 100%;
+    font-size: 12px;
+  }
+
+  th, td {
+    padding: 6px;
+  }
+
+  /* Titres */
+  h1 {
+    font-size: 22px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
