@@ -446,3 +446,75 @@ select {
   h2 {
     font-size: 18px;
   }
+
+  /* =========================
+   MOBILE FIX FINAL
+========================= */
+@media (max-width: 768px) {
+
+  body {
+    flex-direction: column;
+    height: auto;
+    overflow-x: hidden;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px;
+  }
+
+  .sidebar nav ul {
+    display: flex;
+    gap: 10px;
+  }
+
+  .sidebar nav li {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .profile {
+    display: none;
+  }
+
+  .main {
+    padding: 16px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  canvas {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .data {
+    padding: 18px;
+  }
+
+  table {
+    font-size: 12px;
+  }
+
+  th, td {
+    padding: 8px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+}
+
+/* Scroll table mobile */
+.table-wrapper {
+  overflow-x: auto;
+}
