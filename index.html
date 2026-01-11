@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Crypto AI</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="logo">Crypto AI</div>
+  <nav>
+    <ul>
+      <li class="nav-item active" data-section="home">Accueil</li>
+      <li class="nav-item" data-section="crypto">Crypto</li>
+      <li class="nav-item" data-section="settings">Paramètres</li>
+    </ul>
+  </nav>
+  <div class="profile">
+    <div class="avatar">XY</div>
+    <div>
+      <div id="username">Alex</div>
+      <div id="status">Gratuit</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- ACCUEIL -->
+  <section id="home" class="section active">
+    <h1>Crypto AI</h1>
+    <p>
+      Plateforme de trading crypto automatisée par intelligence artificielle.<br><br>
+      🔹 IA autonome 24/7<br>
+      🔹 Analyse multi-crypto<br>
+      🔹 Gestion intelligente du risque<br><br>
+      Laissez l’IA trader pendant que vous gardez le contrôle.
+    </p>
+  </section>
+
+  <!-- CRYPTO -->
+  <section id="crypto" class="section">
+
+    <h2>Marché Crypto</h2>
+
+    <div class="ia-box">
+      <span id="iaState">IA activée</span>
+      <button id="iaToggle" class="btn" onclick="toggleIA()">IA ON / OFF</button>
+    </div>
+
+    <!-- CARTES CRYPTO -->
+    <div id="cards" class="cards"></div>
+    <!-- CRYPTO SÉLECTIONNÉE -->
+      <h3 id="selectedTitle">Sélectionne une crypto</h3>
+
+    <!-- GRAPH -->
+    <canvas id="chart" style="margin:40px 0;"></canvas>
+
+    <!-- DÉTAILS BTC -->
+    <div class="data">
+      <div id="price">--</div>
+      <p>RSI : <strong id="rsi">--</strong></p>
+      <p>Tendance : <strong id="trend">--</strong></p>
+      <p>Décision IA : <strong id="decision">--</strong></p>
+      <p>Position : <strong id="position">--</strong></p>
+      <p>Entrée : <strong id="entry">--</strong></p>
+      <p>Stop-loss : <strong id="sl">--</strong></p>
+      <p>Take-profit : <strong id="tp">--</strong></p>
+      <p>Capital : <strong id="capital">--</strong> $</p>
+    </div>
+
+    <select id="cryptoSelect" class="btn">
+      <option value="BTC/USDT">Bitcoin</option>
+      <option value="ETH/USDT">Ethereum</option>
+      <option value="SOL/USDT">Solana</option>
+    </select>
+
+<canvas id="chart" height="120"></canvas>
+
+	<!-- HISTORIQUE -->
+    <h3>Historique IA</h3>
+    <table>
+      <thead>
+        <tr><th>Heure</th><th>Action</th><th>Prix</th></tr>
+      </thead>
+      <tbody id="history"></tbody>
+    </table>
+
+    <!-- ABONNEMENTS -->
+    <div class="plans" style="margin-top:40px;">
+      <div class="plan">Starter<br>1 crypto<br>❌ Historique</div>
+      <div class="plan highlight">PRO ⭐<br>Multi-crypto<br>✔ Historique</div>
+      <div class="plan">Elite<br>Tout<br>Support prioritaire</div>
+    </div>
+
+  </section>
+
+  <!-- PARAMÈTRES -->
+  <section id="settings" class="section">
+    <h2>Paramètres</h2>
+    <label>
+      Nom :
+      <input id="nameInput" placeholder="Ton prénom">
+    </label>
+    <button id="saveName" class="btn">Enregistrer</button>
+  </section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
