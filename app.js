@@ -115,3 +115,28 @@ function selectCrypto(symbol) {
   historyPrices = [];
   document.getElementById("cryptoSelect").value = symbol;
 }
+
+// ===== NAVIGATION ONGLET (CLICK FIX) =====
+document.addEventListener("DOMContentLoaded", () => {
+  const navItems = document.querySelectorAll(".nav-item");
+  const sections = document.querySelectorAll(".section");
+
+  navItems.forEach(item => {
+    item.addEventListener("click", () => {
+
+      // Retire l'actif partout
+      navItems.forEach(n => n.classList.remove("active"));
+      sections.forEach(s => s.classList.remove("active"));
+
+      // Active l'onglet cliqué
+      item.classList.add("active");
+      const target = item.getAttribute("data-section");
+      const section = document.getElementById(target);
+
+      if (section) {
+        section.classList.add("active");
+        section.scrollIntoView({ behavior: "smooth" });
+      }
+    });
+  });
+}};
