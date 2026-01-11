@@ -1,5 +1,5 @@
 async function refresh() {
-  const res = await fetch("http://127.0.0.1:8000/state");
+  fetch("http://127.0.0.1:8000/state").catch(() => null);
   const data = await res.json();
 
   // Capital global
@@ -24,7 +24,7 @@ async function refresh() {
 }
 
 async function toggleIA() {
-  await fetch("http://127.0.0.1:8000/toggle-ia", { method: "POST" });
+fetch("http://127.0.0.1:8000/state").catch(() => null);
 }
 
 setInterval(refresh, 1000);
@@ -58,7 +58,7 @@ document.getElementById("cryptoSelect").onchange = e => {
 };
 
 async function drawChart() {
-  const res = await fetch("http://127.0.0.1:8000/state");
+  fetch("http://127.0.0.1:8000/state").catch(() => null) 
   const data = await res.json();
 
   const price = data.cryptos[currentSymbol].price;
@@ -67,25 +67,22 @@ async function drawChart() {
   historyPrices.push(price);
   if (historyPrices.length > 30) historyPrices.shift();
 
-  if (!chart) {
-    chart = new Chart(document.getElementById("chart"), {
-      type: "line",
-      data: {
-        labels: historyPrices.map((_, i) => i),
-        datasets: [{
-          label: currentSymbol,
-          data: historyPrices,
-          borderColor: "#4cc9f0",
-          tension: 0.3
-        }]
-      }
-    });
-  } else {
-    chart.data.datasets[0].label = currentSymbol;
-    chart.data.datasets[0].data = historyPrices;
-    chart.update();
+chart = new Chart(document.getElementById("chart"), {
+  type: "line",
+  data: {
+    labels: historyPrices.map((_, i) => i),
+    datasets: [{
+      label: currentSymbol,
+      data: historyPrices,
+      borderColor: "#4cc9f0",
+      tension: 0.3
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false
   }
-}
+});
 
 setInterval(drawChart, 3000);
 
