@@ -3,6 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <title>Crypto AI</title>
+
+  <!-- 🔴 OBLIGATOIRE POUR MOBILE -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,6 +20,7 @@
       <li class="nav-item" data-section="settings">Paramètres</li>
     </ul>
   </nav>
+
   <div class="profile">
     <div class="avatar">XY</div>
     <div>
@@ -49,15 +54,14 @@
       <button id="iaToggle" class="btn" onclick="toggleIA()">IA ON / OFF</button>
     </div>
 
-    <!-- CARTES CRYPTO -->
+    <!-- CARTES -->
     <div id="cards" class="cards"></div>
-    <!-- CRYPTO SÉLECTIONNÉE -->
-      <h3 id="selectedTitle">Sélectionne une crypto</h3>
 
-    <!-- GRAPH -->
-    <canvas id="chart" style="margin:40px 0;"></canvas>
+    <h3 id="selectedTitle">Sélectionne une crypto</h3>
 
-    <!-- DÉTAILS BTC -->
+    <!-- ✅ UN SEUL CANVAS -->
+    <canvas id="chart"></canvas>
+
     <div class="data">
       <div id="price">--</div>
       <p>RSI : <strong id="rsi">--</strong></p>
@@ -76,22 +80,18 @@
       <option value="SOL/USDT">Solana</option>
     </select>
 
-<canvas id="chart" height="120"></canvas>
-
-	<!-- HISTORIQUE -->
     <h3>Historique IA</h3>
-    <table>
-      <thead>
-        <tr><th>Heure</th><th>Action</th><th>Prix</th></tr>
-      </thead>
-      <tbody id="history"></tbody>
-    </table>
-
-    <!-- ABONNEMENTS -->
-    <div class="plans" style="margin-top:40px;">
-      <div class="plan">Starter<br>1 crypto<br>❌ Historique</div>
-      <div class="plan highlight">PRO ⭐<br>Multi-crypto<br>✔ Historique</div>
-      <div class="plan">Elite<br>Tout<br>Support prioritaire</div>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Heure</th>
+            <th>Action</th>
+            <th>Prix</th>
+          </tr>
+        </thead>
+        <tbody id="history"></tbody>
+      </table>
     </div>
 
   </section>
