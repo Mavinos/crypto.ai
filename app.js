@@ -1,3 +1,36 @@
+console.log("APP.JS CHARGÉ");
+
+async function refresh() {
+  const res = await fetch("http://127.0.0.1:8000/state");
+  const data = await res.json();
+
+  // Capital global
+  document.getElementById("capital").innerText =
+    data.capital.toFixed(2);
+
+  const cards = document.getElementById("cards");
+  cards.innerHTML = "";
+
+  Object.entries(data.cryptos).forEach(([symbol, c]) => {
+    cards.innerHTML += `
+      <div class="card" onclick="selectCrypto('${symbol}')">
+        <h3>${symbol}</h3>
+        <p>Prix : ${c.price ? c.price.toFixed(2) : "--"}</p>
+        <p>RSI : ${c.rsi ?? "--"}</p>
+        <p>Tendance : ${c.trend ?? "--"}</p>
+        <p>Décision : ${c.decision}</p>
+        <p>Position : ${c.position ? "OUVERTE" : "AUCUNE"}</p>
+      </div>
+    `;
+  });
+}
+
+async function toggleIA() {
+  await fetch("http://127.0.0.1:8000/toggle-ia", { method: "POST" });
+}
+
+setInterval(refresh, 1000);
+
 // ===== NAVIGATION ONGLET (FIX DEFINITIF) =====
 document.addEventListener("DOMContentLoaded", () => {
   const navItems = document.querySelectorAll(".nav-item");
@@ -87,3 +120,34 @@ function selectCrypto(symbol) {
   historyPrices = [];
   document.getElementById("cryptoSelect").value = symbol;
 }
+
+const API_BASE = "https://crypto-ai-backend-nzvr.onrender.com";
+
+fetch(`${API_BASE}/state`)
+fetch(`${API_BASE}/history`)
+fetch(`${API_BASE}/toggle-ia`, { method: "POST" })
+
+async function loadPlan() {
+  const res = await fetch(API_BASE + "/plan");
+  const data = await res.json();
+
+  if (data.plan === "STARTER") {
+    document.getElementById("history").innerHTML =
+      "🔒 Historique réservé au plan PRO";
+  }
+}
+loadPlan();
+
+async function refreshState() {
+  const res = await fetch("https://crypto-ai-backend-nzvr.onrender.com/state");
+  const data = await res.json();
+
+  // Capital
+  if (data.capital !== undefined) {
+    document.getElementById("capital").innerText =
+      data.capital.toFixed(2) + " $";
+  }
+}
+
+setInterval(refreshState, 2000); // toutes les 2 secondes
+refreshState(); // appel immédiat au chargement
