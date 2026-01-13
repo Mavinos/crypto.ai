@@ -1,153 +1,191 @@
 console.log("APP.JS CHARGÉ");
 
-async function refresh() {
-  const res = await fetch("http://127.0.0.1:8000/state");
-  const data = await res.json();
+// ===============================
+// CONFIG API (RENDER)
+// ===============================
+const API_BASE = "https://crypto-ai-backend-nzvr.onrender.com";
 
-  // Capital global
-  document.getElementById("capital").innerText =
-    data.capital.toFixed(2);
+// ===============================
+// VARIABLES GLOBALES
+// ===============================
+let chart = null;
+let historyPrices = [];
+let currentSymbol = "BTC/USDT";
 
-  const cards = document.getElementById("cards");
-  cards.innerHTML = "";
+// ===============================
+// RAFRAÎCHISSEMENT GLOBAL (STATE)
+// ===============================
+async function refreshState() {
+  try {
+    const res = await fetch(`${API_BASE}/state`);
+    const data = await res.json();
 
-  Object.entries(data.cryptos).forEach(([symbol, c]) => {
-    cards.innerHTML += `
-      <div class="card" onclick="selectCrypto('${symbol}')">
-        <h3>${symbol}</h3>
-        <p>Prix : ${c.price ? c.price.toFixed(2) : "--"}</p>
-        <p>RSI : ${c.rsi ?? "--"}</p>
-        <p>Tendance : ${c.trend ?? "--"}</p>
-        <p>Décision : ${c.decision}</p>
-        <p>Position : ${c.position ? "OUVERTE" : "AUCUNE"}</p>
-      </div>
-    `;
-  });
+    console.log("STATE:", data);
+
+    // Capital
+    if (typeof data.capital === "number") {
+      const el = document.getElementById("capital");
+      if (el) {
+        el.innerText = data.capital.toFixed(2) + " $";
+      }
+    }
+
+    // Cards cryptos
+    const cards = document.getElementById("cards");
+    if (!cards) return;
+
+    cards.innerHTML = "";
+
+    Object.entries(data.cryptos || {}).forEach(([symbol, c]) => {
+      cards.innerHTML += `
+        <div class="card" onclick="selectCrypto('${symbol}')">
+          <h3>${symbol}</h3>
+          <p>Prix : ${c.price ? c.price.toFixed(2) : "--"}</p>
+          <p>RSI : ${c.rsi ?? "--"}</p>
+          <p>Tendance : ${c.trend ?? "--"}</p>
+          <p>Décision : ${c.decision ?? "--"}</p>
+          <p>Position : ${c.position ? "OUVERTE" : "AUCUNE"}</p>
+        </div>
+      `;
+    });
+  } catch (e) {
+    console.error("Erreur refreshState:", e);
+  }
 }
 
+setInterval(refreshState, 2000);
+refreshState();
+
+// ===============================
+// TOGGLE IA
+// ===============================
 async function toggleIA() {
-  await fetch("http://127.0.0.1:8000/toggle-ia", { method: "POST" });
+  await fetch(`${API_BASE}/toggle-ia`, { method: "POST" });
 }
 
-setInterval(refresh, 1000);
+// ===============================
+// GRAPH
+// ===============================
+async function drawChart() {
+  try {
+    const res = await fetch(`${API_BASE}/state`);
+    const data = await res.json();
 
-// ===== NAVIGATION ONGLET (FIX DEFINITIF) =====
+    const price = data.cryptos?.[currentSymbol]?.price;
+    if (!price) return;
+
+    historyPrices.push(price);
+    if (historyPrices.length > 30) historyPrices.shift();
+
+    if (!chart) {
+      chart = new Chart(document.getElementById("chart"), {
+        type: "line",
+        data: {
+          labels: historyPrices.map((_, i) => i),
+          datasets: [{
+            label: currentSymbol,
+            data: historyPrices,
+            borderColor: "#4cc9f0",
+            tension: 0.3
+          }]
+        }
+      });
+    } else {
+      chart.data.datasets[0].label = currentSymbol;
+      chart.data.datasets[0].data = historyPrices;
+      chart.update();
+    }
+  } catch (e) {
+    console.error("Erreur drawChart:", e);
+  }
+}
+
+setInterval(drawChart, 3000);
+
+// ===============================
+// HISTORIQUE
+// ===============================
+async function loadHistory() {
+  try {
+    const res = await fetch(`${API_BASE}/history`);
+    const data = await res.json();
+
+    const box = document.getElementById("history");
+    if (!box) return;
+
+    box.innerHTML = "";
+
+    data.slice().reverse().forEach(t => {
+      box.innerHTML += `
+        <tr>
+          <td>${t.time}</td>
+          <td>${t.symbol}</td>
+          <td style="color:${t.type === "BUY" ? "lime" : "red"}">
+            ${t.type}
+          </td>
+          <td>${t.price?.toFixed(2) ?? "-"}</td>
+          <td>${t.pnl ?? "-"}</td>
+        </tr>
+      `;
+    });
+  } catch (e) {
+    console.error("Erreur loadHistory:", e);
+  }
+}
+
+setInterval(loadHistory, 2000);
+
+// ===============================
+// PLAN (STARTER / PRO / ELITE)
+// ===============================
+async function loadPlan() {
+  try {
+    const res = await fetch(`${API_BASE}/plan`);
+    const data = await res.json();
+
+    if (data.plan === "STARTER") {
+      const history = document.getElementById("history");
+      if (history) {
+        history.innerHTML = "🔒 Historique réservé au plan PRO";
+      }
+    }
+  } catch (e) {
+    console.error("Erreur loadPlan:", e);
+  }
+}
+
+loadPlan();
+
+// ===============================
+// SELECT CRYPTO
+// ===============================
+function selectCrypto(symbol) {
+  currentSymbol = symbol;
+  historyPrices = [];
+  const select = document.getElementById("cryptoSelect");
+  if (select) select.value = symbol;
+}
+
+document.getElementById("cryptoSelect")?.addEventListener("change", e => {
+  currentSymbol = e.target.value;
+  historyPrices = [];
+});
+
+// ===============================
+// NAVIGATION ONGLET
+// ===============================
 document.addEventListener("DOMContentLoaded", () => {
   const navItems = document.querySelectorAll(".nav-item");
   const sections = document.querySelectorAll(".section");
 
   navItems.forEach(item => {
     item.addEventListener("click", () => {
-      // reset
       navItems.forEach(n => n.classList.remove("active"));
       sections.forEach(s => s.classList.remove("active"));
 
-      // activate
       item.classList.add("active");
       const target = item.getAttribute("data-section");
-      document.getElementById(target).classList.add("active");
+      document.getElementById(target)?.classList.add("active");
     });
   });
 });
-
-let chart;
-let historyPrices = [];
-let currentSymbol = "BTC/USDT";
-
-document.getElementById("cryptoSelect").onchange = e => {
-  currentSymbol = e.target.value;
-  historyPrices = [];
-};
-
-async function drawChart() {
-  const res = await fetch("http://127.0.0.1:8000/state");
-  const data = await res.json();
-
-  const price = data.cryptos[currentSymbol].price;
-  if (!price) return;
-
-  historyPrices.push(price);
-  if (historyPrices.length > 30) historyPrices.shift();
-
-  if (!chart) {
-    chart = new Chart(document.getElementById("chart"), {
-      type: "line",
-      data: {
-        labels: historyPrices.map((_, i) => i),
-        datasets: [{
-          label: currentSymbol,
-          data: historyPrices,
-          borderColor: "#4cc9f0",
-          tension: 0.3
-        }]
-      }
-    });
-  } else {
-    chart.data.datasets[0].label = currentSymbol;
-    chart.data.datasets[0].data = historyPrices;
-    chart.update();
-  }
-}
-
-setInterval(drawChart, 3000);
-
-async function loadHistory() {
-  const res = await fetch("http://127.0.0.1:8000/history");
-  const data = await res.json();
-
-  const box = document.getElementById("history");
-  box.innerHTML = "";
-
-  data.reverse().forEach(t => {
-    box.innerHTML += `
-      <tr>
-        <td>${t.time}</td>
-        <td>${t.symbol}</td>
-        <td style="color:${t.type === "BUY" ? "lime" : "red"}">
-          ${t.type}
-        </td>
-        <td>${t.price?.toFixed(2) ?? "-"}</td>
-        <td>${t.pnl ?? "-"}</td>
-      </tr>
-    `;
-  });
-}
-
-setInterval(loadHistory, 2000);
-
-function selectCrypto(symbol) {
-  currentSymbol = symbol;
-  historyPrices = [];
-  document.getElementById("cryptoSelect").value = symbol;
-}
-
-const API_BASE = "https://crypto-ai-backend-nzvr.onrender.com";
-
-fetch(`${API_BASE}/state`)
-fetch(`${API_BASE}/history`)
-fetch(`${API_BASE}/toggle-ia`, { method: "POST" })
-
-async function loadPlan() {
-  const res = await fetch(API_BASE + "/plan");
-  const data = await res.json();
-
-  if (data.plan === "STARTER") {
-    document.getElementById("history").innerHTML =
-      "🔒 Historique réservé au plan PRO";
-  }
-}
-loadPlan();
-
-async function refreshState() {
-  const res = await fetch("https://crypto-ai-backend-nzvr.onrender.com/state");
-  const data = await res.json();
-
-  // Capital
-  if (data.capital !== undefined) {
-    document.getElementById("capital").innerText =
-      data.capital.toFixed(2) + " $";
-  }
-}
-
-setInterval(refreshState, 2000); // toutes les 2 secondes
-refreshState(); // appel immédiat au chargement
