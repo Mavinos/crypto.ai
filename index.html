@@ -16,102 +16,69 @@
       <li class="nav-item" data-section="settings">Paramètres</li>
     </ul>
   </nav>
-  <div class="profile">
-    <div class="avatar">XY</div>
-    <div>
-      <div id="username">Mathis</div>
-      <div id="status">Gratuit</div>
-    </div>
-  </div>
 </div>
 
 <div class="main">
 
-  <!-- ACCUEIL -->
-  <section id="home" class="section active">
-    <h1>Crypto AI</h1>
-    <p>
-      Plateforme de trading crypto automatisée par intelligence artificielle.<br><br>
-      🔹 IA autonome 24/7<br>
-      🔹 Analyse multi-crypto<br>
-      🔹 Gestion intelligente du risque<br><br>
-      Laissez l’IA trader pendant que vous gardez le contrôle.
-    </p>
-  </section>
+<section id="home" class="section active">
+  <h1>Crypto AI</h1>
+  <p>IA + Manuel combinés 🔥</p>
+</section>
 
-  <!-- CRYPTO -->
-  <section id="crypto" class="section">
+<section id="crypto" class="section">
 
-    <h2>Marché Crypto</h2>
+<h2>Marché Crypto</h2>
 
-    <div class="ia-box">
-      <span id="iaState">IA activée</span>
-      <button id="iaToggle" class="btn" onclick="toggleIA()">IA ON / OFF</button>
-    </div>
+<div class="ia-box">
+  <span id="iaState">IA activée</span>
+  <button class="btn" onclick="toggleIA()">IA ON / OFF</button>
+</div>
 
-    <!-- CARTES CRYPTO -->
-    <div id="cards" class="cards"></div>
-    <!-- CRYPTO SÉLECTIONNÉE -->
-      <h3 id="selectedTitle">Sélectionne une crypto</h3>
+<div id="cards" class="cards"></div>
 
-    <!-- GRAPH -->
-    <canvas id="chart" style="margin:40px 0;"></canvas>
+<h3 id="selectedTitle">Crypto sélectionnée</h3>
 
-    <!-- DÉTAILS BTC -->
-    <div class="data">
-      <div id="price">--</div>
-      <p>RSI : <strong id="rsi">--</strong></p>
-      <p>Tendance : <strong id="trend">--</strong></p>
-      <p>Décision IA : <strong id="decision">--</strong></p>
-      <p>Position : <strong id="position">--</strong></p>
-      <p>Entrée : <strong id="entry">--</strong></p>
-      <p>Stop-loss : <strong id="sl">--</strong></p>
-      <p>Take-profit : <strong id="tp">--</strong></p>
-      <p>Capital : <strong id="capital">--</strong> $</p>
-    </div>
+<canvas id="chart" style="margin:40px 0;"></canvas>
 
-    <select id="cryptoSelect" class="btn">
-      <option value="BTC/USDT">Bitcoin</option>
-      <option value="ETH/USDT">Ethereum</option>
-      <option value="SOL/USDT">Solana</option>
-    </select>
+<div class="data">
+  <div id="price">--</div>
+  <p>RSI : <strong id="rsi">--</strong></p>
+  <p>Tendance : <strong id="trend">--</strong></p>
+  <p>Décision : <strong id="decision">--</strong></p>
+  <p>Position : <strong id="position">--</strong></p>
+  <p>Capital : <strong id="capital">--</strong></p>
+</div>
 
-<canvas id="chart" height="120"></canvas>
+<select id="cryptoSelect" class="btn">
+  <option value="BTC/USDC">Bitcoin</option>
+  <option value="ETH/USDC">Ethereum</option>
+  <option value="SOL/USDC">Solana</option>
+</select>
 
-	<!-- HISTORIQUE -->
-    <h3>Historique IA</h3>
-    <table>
-      <thead>
-        <tr><th>Heure</th><th>Action</th><th>Prix</th></tr>
-      </thead>
-      <tbody id="history"></tbody>
-    </table>
+<div style="margin-top:20px;">
+  <input type="number" id="manualAmount" placeholder="Montant en USDC" class="btn">
+  <button class="btn" onclick="manualBuy()">BUY</button>
+  <button class="btn" onclick="manualSell()">SELL</button>
+</div>
 
-    <!-- ABONNEMENTS -->
-    <div class="plans" style="margin-top:40px;">
-      <div class="plan">Starter<br>1 crypto<br>❌ Historique</div>
-      <div class="plan highlight">PRO ⭐<br>Multi-crypto<br>✔ Historique</div>
-      <div class="plan">Elite<br>Tout<br>Support prioritaire</div>
-    </div>
+<h3>Historique</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Heure</th>
+      <th>Symbole</th>
+      <th>Action</th>
+      <th>Prix</th>
+      <th>PNL</th>
+    </tr>
+  </thead>
+  <tbody id="history"></tbody>
+</table>
 
-  </section>
-
-  <!-- PARAMÈTRES -->
-  <section id="settings" class="section">
-    <h2>Paramètres</h2>
-    <label>
-      Nom :
-      <input id="nameInput" placeholder="Ton prénom">
-    </label>
-    <button id="saveName" class="btn">Enregistrer</button>
-  </section>
+</section>
 
 </div>
 
-<div>
-  Capital : <span id="capital">-- $</span>
-</div>
-	
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="app.js"></script>
 </body>
